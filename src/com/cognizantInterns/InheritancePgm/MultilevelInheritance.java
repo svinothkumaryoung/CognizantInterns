@@ -1,4 +1,4 @@
-package com.cognizant.inheritance;
+package com.cognizantInterns.InheritancePgm;
 
 import java.util.Scanner;
 
