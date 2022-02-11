@@ -1,6 +1,7 @@
 package com.cognizantInterns.Database;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
@@ -10,12 +11,30 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class JDBCOperation {
+
     InputStreamReader inputStreamReader=new InputStreamReader(System.in);
     BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
     ResultSet rs1;
 
 
     Registeration r=new Registeration();
+
+    public static Connection getConnect()
+    {
+        Connection con=null;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con= DriverManager.getConnection("jdbc:mysql://localhost:3306/cogniInterns10022022","root","12345678");
+
+        }
+        catch(Exception e)
+        {
+            System.out.println("Exception ");
+        }
+        return con;
+    }
+
+
     void getDate() throws IOException
     {
         System.out.println("Enter the Name ");
@@ -34,8 +53,7 @@ public class JDBCOperation {
     {
         try
         {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/cogniInterns10022022","root","12345678");
+            Connection connection=getConnect();
             PreparedStatement ps=connection.prepareStatement("insert into registeration(name,dept,emailid,dateofBirth,mobileNo) values(?,?,?,?,?);");
             ps.setString(1,r.getName());
             ps.setString(2,r.getDept());
@@ -53,11 +71,7 @@ public class JDBCOperation {
             }
         }
 
-        catch(ClassNotFoundException cnfe)
-        {
-            System.out.println("Class Driver Not Found");
 
-        }
         catch(SQLException e)
         {
             System.out.println("SQL Query Is not found");
@@ -71,8 +85,7 @@ public class JDBCOperation {
          try
          {
 
-             Class.forName("com.mysql.cj.jdbc.Driver");
-             Connection connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/cogniInterns10022022","root","12345678");
+             Connection connection=getConnect();
              PreparedStatement ps1=connection.prepareStatement("select * from registeration where sno=?");
              ps1.setInt(1,r.getSno());
              rs1= ps1.executeQuery();
@@ -89,40 +102,63 @@ public class JDBCOperation {
 
 
          }
-         catch(ClassNotFoundException cnfe)
-         {
-             System.out.println("Class Not Found Exception");
-         }
+
          catch(SQLException sqlException)
          {
              System.out.println("SQL Excaption");
          }
      }
-     public void reteriveData()
+     public void reteriveData() throws IOException
      {
+         FileWriter fileWriter=new FileWriter("vin.txt");
          try{
-             Class.forName("com.mysql.cj.jdbc.Driver");
-             Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/cogniInterns10022022","root","12345678");
-             PreparedStatement ps=c.prepareStatement("select * from registeration ");
+             Connection connection=getConnect();
+             PreparedStatement ps=connection.prepareStatement("select * from registeration ");
+
              ResultSet rs=ps.executeQuery();
              System.out.println("Sno\tName\t\t\t\t\tDepartment\t\t\t\t\tEmailid\t\t\t\t\tDate of Birth\t\t\tMobile Number\t\t\t");
+             fileWriter.write("Sno\tName\t\t\t\t\tDepartment\t\t\t\t\tEmailid\t\t\t\t\tDate of Birth\t\t\tMobile Number\t\t\t");
+             fileWriter.write("\n");
              while(rs.next())
              {
                  System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t\t\t\t\t"+rs.getString(3)+"\t\t\t\t\t"+rs.getString(4));
+                 fileWriter.write(rs.getInt(1)+"\t"+rs.getString(2)+"\t\t\t\t\t"+rs.getString(3)+"\t\t\t\t\t"+rs.getString(4));
+                 fileWriter.write("\n");
              }
+             fileWriter.close();
+         }
 
-         }
-         catch(ClassNotFoundException cnfe)
-         {
-             System.out.println("Class Not Found");
-         }
          catch (SQLException sqle)
          {
              System.out.println("SQLException");
          }
      }
+   public  void updateRecords() throws IOException,ClassNotFoundException,SQLException
+     {
+         this.reteriveData();
+         System.out.println("Enter the Sno u want to Update");
+         int s=Integer.parseInt(bufferedReader.readLine());
+         Connection connection=getConnect();
+         System.out.println("Enter the Name u want to update");
+         r.setName(bufferedReader.readLine());
+         PreparedStatement ps1=connection.prepareStatement("update registeration set name=? where sno=? ");
+         ps1.setString(1,r.getName());
+         ps1.setInt(2,s);
+         int i=ps1.executeUpdate();
+         if(i>0)
+         {
+             System.out.println("Updated Successfully");
+         }
+         else
+         {
+             System.out.println("Error in Updation");
+         }
 
-     void chooseTheOperation() throws IOException
+
+
+     }
+
+     void chooseTheOperation() throws IOException,ClassNotFoundException,SQLException
      {
          System.out.println("Enter your Choice ");
          System.out.println("1.Insert\n2.Update\n3.Delete\n4.Reterive Data\n5.Reterive Condition");
@@ -134,7 +170,7 @@ public class JDBCOperation {
                  this.insertData();
                  break;
              case 2:
-                 System.out.println("Coming Soon....");
+                 this.updateRecords();
                  break;
              case 3:
                  System.out.println("Coming Soon....");
@@ -152,7 +188,7 @@ public class JDBCOperation {
      }
 
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException,ClassNotFoundException,SQLException{
         JDBCOperation vin=new JDBCOperation();
         vin.chooseTheOperation();
     }
