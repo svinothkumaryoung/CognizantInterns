@@ -64,7 +64,7 @@ public class JDBCOperation {
         }
 
     }
-     void ReteriveData() throws IOException
+     void ReteriveDatawithCondition() throws IOException
      {
          System.out.println("Enter the Serial no u Want to Reterive");
          r.setSno(Integer.parseInt(bufferedReader.readLine()));
@@ -98,6 +98,30 @@ public class JDBCOperation {
              System.out.println("SQL Excaption");
          }
      }
+     public void reteriveData()
+     {
+         try{
+             Class.forName("com.mysql.cj.jdbc.Driver");
+             Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/cogniInterns10022022","root","12345678");
+             PreparedStatement ps=c.prepareStatement("select * from registeration ");
+             ResultSet rs=ps.executeQuery();
+             System.out.println("Sno\tName\t\t\t\t\tDepartment\t\t\tEmailid\t\t\tDate of Birth\t\t\tMobile Number\t\t\t");
+             while(rs.next())
+             {
+                 System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t\t\t\t\t");
+             }
+
+         }
+         catch(ClassNotFoundException cnfe)
+         {
+             System.out.println("Class Not Found");
+         }
+         catch (SQLException sqle)
+         {
+             System.out.println("SQLException");
+         }
+     }
+
      void chooseTheOperation() throws IOException
      {
          System.out.println("Enter your Choice ");
@@ -116,10 +140,10 @@ public class JDBCOperation {
                  System.out.println("Coming Soon....");
                  break;
              case 4:
-                 System.out.println("Coming Soon....");
+                this.reteriveData();
                  break;
              case 5:
-                this.ReteriveData();
+                this.ReteriveDatawithCondition();
                  break;
              default:
                  System.out.println("Please Choose Correct Options");
