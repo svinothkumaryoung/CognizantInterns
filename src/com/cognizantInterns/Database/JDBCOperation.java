@@ -105,10 +105,10 @@ public class JDBCOperation {
              Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/cogniInterns10022022","root","12345678");
              PreparedStatement ps=c.prepareStatement("select * from registeration ");
              ResultSet rs=ps.executeQuery();
-             System.out.println("Sno\tName\t\t\t\t\tDepartment\t\t\tEmailid\t\t\tDate of Birth\t\t\tMobile Number\t\t\t");
+             System.out.println("Sno\tName\t\t\t\t\tDepartment\t\t\t\t\tEmailid\t\t\t\t\tDate of Birth\t\t\tMobile Number\t\t\t");
              while(rs.next())
              {
-                 System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t\t\t\t\t");
+                 System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t\t\t\t\t"+rs.getString(3)+"\t\t\t\t\t"+rs.getString(4));
              }
 
          }
