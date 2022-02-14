@@ -28,8 +28,29 @@ public class LinkedListPgm {
 
     void reteriveDataSorting()
     {
-        System.out.println("Sorting the Data\n\n");
+        System.out.println("Sorting the Data Default Sorting \n\n");
         Collections.sort(regi);
+        Iterator<Registeration> it=regi.iterator();
+        while (it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+    }
+    void reteriveDataOnCustomized()
+    {
+        System.out.println("Sorting the Data Name Sorting \n\n");
+        Collections.sort(regi,new NameComparator());
+        Iterator<Registeration> it=regi.iterator();
+        while (it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+
+    }
+    void ReteriveDatawithRegisterNo()
+    {
+        System.out.println("Sorting the Data Register Number Sorting \n\n");
+        Collections.sort(regi,new RegisterNoComparator());
         Iterator<Registeration> it=regi.iterator();
         while (it.hasNext())
         {
@@ -42,6 +63,8 @@ public class LinkedListPgm {
         llp.addData();
         llp.reteriveData();
         llp.reteriveDataSorting();
+        llp.ReteriveDatawithRegisterNo();
+        llp.reteriveDataOnCustomized();
 
     }
 }
