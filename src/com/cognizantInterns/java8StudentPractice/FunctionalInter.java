@@ -1,4 +1,4 @@
-package com.cognizantInterns.java8;
+package com.cognizantInterns.java8StudentPractice;
 
 public class FunctionalInter  {
     static inte i=()->{
