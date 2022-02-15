@@ -1,4 +1,4 @@
-package com.cognizantInterns.java8StudentPractice.InBuiltFunctionalInterface;
+package com.cognizantInterns.java8StudentPractice.InBuiltFunctionalInterface.Consumer;
 
 import com.cognizantInterns.java8StudentPractice.Pojo.PojoDataClass;
 import com.cognizantInterns.java8StudentPractice.Pojo.Registeration;

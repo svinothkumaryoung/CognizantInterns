@@ -1,4 +1,4 @@
-package com.cognizantInterns.java8StudentPractice.InBuiltFunctionalInterface;
+package com.cognizantInterns.java8StudentPractice.InBuiltFunctionalInterface.Consumer;
 
 import java.util.function.Consumer;
 
